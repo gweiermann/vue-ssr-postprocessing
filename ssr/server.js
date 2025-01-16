@@ -1,5 +1,6 @@
 import express from 'express'
 import axios from 'axios'
+import ssr from "./ssr.js"
 
 const proxyPort = 9090
 const reverseProxy = `http://localhost:${proxyPort}`
@@ -18,7 +19,12 @@ app.get('*', async (req, res) => {
 
         res.set(response.headers)
         res.status(response.status)
-        res.send(response.data)
+
+        if (response.headers.get('content-type').includes('text/html')) {
+            res.send(await ssr(response.data))
+        } else {
+            res.send(response.data)
+        }
     } catch(err) {
         res.status(err.status)
     }
