@@ -1,12 +1,4 @@
 import './assets/main.css'
+import createVueApp from "@/app.js";
 
-import { createApp } from 'vue$'
-import HelloWorld from "@/components/HelloWorld.vue";
-import TheWelcome from "@/components/TheWelcome.vue";
-
-createApp({
-    components: {
-        HelloWorld,
-        TheWelcome
-    }
-}).mount('#app')
+createVueApp(window.SSR_TEMPLATE).mount('#app')
