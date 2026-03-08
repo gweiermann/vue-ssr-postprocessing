@@ -17,14 +17,12 @@ export default async function ssr(html) {
     appContainer.html(vueRender)
 
     // pass the unrendered html to js
-    const injectedTemplate = template
-        .replaceAll('\\', '\\\\')                              // escape backslashes
-        .replaceAll('`', '\\`')         // escape backticks
-        .replace(/[\t\n]+| {2,}/g, '')  // remove unnecessary whitespace
-        .trim();                                               // remove unnecessary whitespace
-    $('head').append(`<script>
-        window.SSR_TEMPLATE = \`${injectedTemplate}\`
-    </script>`)
+    const injectedTemplate = JSON.stringify(template)
+    $('head').append(`
+        <script>
+            window.SSR_TEMPLATE = ${injectedTemplate}
+        </script>
+    `)
 
     return $.html()
 }
